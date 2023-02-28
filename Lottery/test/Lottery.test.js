@@ -2,7 +2,8 @@ const assert = require("assert");
 const ganache = require("ganache-cli");
 const Web3 = require("web3");
 const web3 = new Web3(ganache.provider());
-const { interface, bytecode } = require("../compile");
+
+const { abi, evm } = require("../compile");
 
 let accounts;
 let lottery;
@@ -10,8 +11,8 @@ let lottery;
 beforeEach(async () => {
   accounts = await web3.eth.getAccounts();
 
-  lottery = await new web3.eth.Contract(JSON.parse(interface))
-    .deploy({ data: bytecode })
+  lottery = await new web3.eth.Contract(abi)
+    .deploy({ data: evm.bytecode.object })
     .send({ from: accounts[0], gas: "1000000" });
 });
 
@@ -23,7 +24,7 @@ describe("Lottery Contract", () => {
   it("allows one account to enter", async () => {
     await lottery.methods.enter().send({
       from: accounts[0],
-      value: web3.utils.toWei("0.2", "ether"),
+      value: web3.utils.toWei("0.02", "ether"),
     });
 
     const players = await lottery.methods.getPlayers().call({
@@ -95,6 +96,13 @@ describe("Lottery Contract", () => {
     await lottery.methods.pickWinner().send({
       from: accounts[0],
     });
+
+    const lastWinner = await lottery.methods
+      .lastWinner()
+      .call({ from: accounts[0] });
+
+    console.log("The winner is: " + lastWinner);
+    assert.ok(lastWinner);
 
     const finalBalance = await web3.eth.getBalance(accounts[0]);
     console.log(finalBalance);
