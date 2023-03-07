@@ -55,11 +55,9 @@ const RequestIndex = ({ address, requests, requestsCount, approversCount }) => {
     <Layout>
       <h3>Requests</h3>
       <Link route={`/campaigns/${address}/requests/new`}>
-        <a>
-          <Button primary floated="right" style={{ marginBottom: "10px" }}>
-            Add Request
-          </Button>
-        </a>
+        <Button primary floated="right" style={{ marginBottom: "10px" }}>
+          Add Request
+        </Button>
       </Link>
       <Table>
         <Header>

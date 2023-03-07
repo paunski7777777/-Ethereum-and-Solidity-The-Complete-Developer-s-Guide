@@ -16,11 +16,7 @@ const CampaignIndex = ({ campaings }) => {
     const items = campaings.map((address) => {
       return {
         header: address,
-        description: (
-          <Link route={`/campaigns/${address}`}>
-            <a>View Campaign</a>
-          </Link>
-        ),
+        description: <Link route={`/campaigns/${address}`}>View Campaign</Link>,
         fluid: true,
       };
     });
@@ -33,14 +29,12 @@ const CampaignIndex = ({ campaings }) => {
       <div>
         <h3>Open Campaigns</h3>
         <Link route="/campaigns/new">
-          <a>
-            <Button
-              floated="right"
-              content="Create Campaign"
-              icon="add circle"
-              primary
-            />
-          </a>
+          <Button
+            floated="right"
+            content="Create Campaign"
+            icon="add circle"
+            primary
+          />
         </Link>
         {renderCampaigns()}
       </div>
